@@ -413,7 +413,7 @@
 	  //push into years list
 	  var tmpArray = [];
 	  if(this.maxDate != null && this.minDate != null){
-          this._generateYears((this.minDate).getFullYear(),(this.maxDate).getFullYear())   
+          this._generateYears((this.minDate).getFullYear(),(this.maxDate).getFullYear(), tmpArray)   
 	  }else{
 		  this._generateYears(1945,2030,tmpArray)
 	  }
