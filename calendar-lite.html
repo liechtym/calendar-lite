@@ -29,7 +29,7 @@
 	 -webkit-font-smoothing: antialiased;
 	 font-family: Helvetica, Arial, sans-serif;
 	 border: 1px solid #eee;
-	 --my-elem-primary:#3acfe3;
+	 --my-elem-primary:#BFD730;
      text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
      text-rendering: optimizeLegibility !important;
      -webkit-font-smoothing: antialiased !important;
@@ -105,15 +105,6 @@
     background: var(--my-elem-primary);
     color: #fff;
    }
-
-  /* .mainHeader bg color to primary color */
-
-   .mainHeader{
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    background: var(--my-elem-primary);
-    color: #fff;
-    }
 
   /* disabled .dateSticker color and pointer */
     
@@ -246,17 +237,6 @@
   </style>
 
 
-  <!-- Main header date,month,year are compund binded to selected date -->
-
-   <div class="mainHeader" style="">
-       <div class="yearContainer notextselect" type='yearList' on-tap="_show">
-           {{_getUpdated(date,'year')}} 
-       </div>
-       <div class="monthContainer notextselect">
-         <span type='calendarContent' on-tap="_show" class="menu_item">{{_getUpdated(date,'day')}}</span>, <span class='menu_item' type='monthsList' on-tap="_show">{{_getUpdated(date,'month')}}</span> <span class='menu_item' type='calendarContent' on-tap="_show">{{_getUpdated(date,'date')}}</span> 
-       </div>
-   </div>
-
   <div>
 
     <!-- sub header with  left, right icon and present viewing month  -->
@@ -352,6 +332,7 @@
 	  properties: {
         date: {
           type: Date,
+          observer: '_sup'
         },
         currentMonth: {
             type: Number
@@ -398,7 +379,6 @@
       // generate 6 x 7 table
       this.generateTable();
       this._animationEvent = this._whichAnimationEnd();
-      
       multiple.push(this.date.getDate()+","+this.date.getMonth()+","+this.date.getFullYear());
 
       this.currentYear = this.date.getFullYear();
@@ -471,6 +451,8 @@
       tmpArray = null;
   },
   _getDayClass:function(s,d){
+    // if currentMonth and currentYear are not updated, update them.
+     if (d.getFullYear() !== this.currentYear && d.getMonth() !== this.currentMonth) this._populate(this.date);
      if(this.multiSelect != null){
          if(multiple.indexOf(s+","+this.currentMonth+","+this.currentYear) > -1){
              return "dateSticker  selected";
@@ -483,9 +465,8 @@
   },
    _setDate: function(e){
       var target = e.target;
-      var f = e.model.day;    
+      var f = e.model.day;
       if(f.text != "" && !e.model.day.isDisabled){
-        
         if(this.multiSelect != null){
         if(this.multiSelect.consequent){
           multiple = [];
@@ -566,7 +547,6 @@
        this.years  = tmpArray; 				  
 	 },
 	 _populate :function(date){
-      
 	    this.currentMonth = date.getMonth();
 		  this.currentYear = date.getFullYear();
       this.fire('date-change', {
