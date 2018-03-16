@@ -450,8 +450,6 @@
       tmpArray = null;
   },
   _getDayClass:function(s,d){
-    // if currentMonth and currentYear are not updated, update them.
-     if (d.getFullYear() !== this.currentYear && d.getMonth() !== this.currentMonth) this._populate(this.date);
      if(this.multiSelect != null){
          if(multiple.indexOf(s+","+this.currentMonth+","+this.currentYear) > -1){
              return "dateSticker  selected";
