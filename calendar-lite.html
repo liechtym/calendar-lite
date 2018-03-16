@@ -546,11 +546,19 @@
        this.years  = tmpArray; 				  
 	 },
 	 _populate :function(date){
-	    this.currentMonth = date.getMonth();
-		  this.currentYear = date.getFullYear();
-      this.fire('date-change', {
-        date: this.date
-      });
+    var redoTable = false;
+     if(this.currentMonth !== date.getMonth() || this.currentYear !== date.getFullYear) {
+       redoTable = true;
+     } 
+    this.currentMonth = date.getMonth();
+    this.currentYear = date.getFullYear();
+    this.fire('date-change', {
+      date: this.date
+    });
+    if(redoTable) {
+      this.generateTable();
+      this.separator = [0,1,2,3,4,5];
+    }
 	 },
 	 dateFormat: function(date){
 	    if(this.date){
